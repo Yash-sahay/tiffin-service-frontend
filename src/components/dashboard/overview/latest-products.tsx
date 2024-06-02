@@ -15,6 +15,7 @@ import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/Arr
 import { DotsThreeVertical as DotsThreeVerticalIcon } from '@phosphor-icons/react/dist/ssr/DotsThreeVertical';
 import dayjs from 'dayjs';
 import { baseURL } from '../../../../common';
+import { useRouter } from 'next/navigation';
 
 export interface Product {
   id: string;
@@ -29,7 +30,7 @@ export interface LatestProductsProps {
 }
 
 export function LatestProducts({ products = [], sx }: LatestProductsProps): React.JSX.Element {
-
+  const router = useRouter()
   let allProducts: Array<Product> = [] 
    products.map((item, i) => {
     if(i !< 6){
@@ -76,6 +77,7 @@ export function LatestProducts({ products = [], sx }: LatestProductsProps): Reac
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
           color="inherit"
+          onClick={() => router.push("/dashboard/dishes")}
           endIcon={<ArrowRightIcon fontSize="var(--icon-fontSize-md)" />}
           size="small"
           variant="text"

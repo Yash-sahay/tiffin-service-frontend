@@ -14,6 +14,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 
 const statusMap = {
@@ -38,7 +39,7 @@ export interface LatestOrdersProps {
 }
 
 export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.Element {
-
+  const router = useRouter()
   let allOrders: Array<Order> = [] 
   orders.map((item, i) => {
    if(i !< 7){
@@ -83,6 +84,7 @@ export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
           color="inherit"
+          onClick={() => router.push("/dashboard/orders")}
           endIcon={<ArrowRightIcon fontSize="var(--icon-fontSize-md)" />}
           size="small"
           variant="text"
