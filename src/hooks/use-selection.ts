@@ -43,7 +43,7 @@ export function useSelection<T = string>(keys: T[] = []): Selection<T> {
   }, []);
 
   const selectedAny = selected.size > 0;
-  const selectedAll = selected.size === keys.length;
+  const selectedAll = selected.size === keys?.length;
 
   return {
     deselectAll: handleDeselectAll,

@@ -14,6 +14,7 @@ import type { SxProps } from '@mui/material/styles';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
 import { DotsThreeVertical as DotsThreeVerticalIcon } from '@phosphor-icons/react/dist/ssr/DotsThreeVertical';
 import dayjs from 'dayjs';
+import { baseURL } from '../../../../common';
 
 export interface Product {
   id: string;
@@ -28,38 +29,48 @@ export interface LatestProductsProps {
 }
 
 export function LatestProducts({ products = [], sx }: LatestProductsProps): React.JSX.Element {
+
+  let allProducts: Array<Product> = [] 
+   products.map((item, i) => {
+    if(i !< 6){
+      allProducts.push(item)
+    }
+   })
   return (
     <Card sx={sx}>
       <CardHeader title="Latest products" />
       <Divider />
       <List>
-        {products.map((product, index) => (
-          <ListItem divider={index < products.length - 1} key={product.id}>
-            <ListItemAvatar>
-              {product.image ? (
-                <Box component="img" src={product.image} sx={{ borderRadius: 1, height: '48px', width: '48px' }} />
-              ) : (
-                <Box
-                  sx={{
-                    borderRadius: 1,
-                    backgroundColor: 'var(--mui-palette-neutral-200)',
-                    height: '48px',
-                    width: '48px',
-                  }}
-                />
-              )}
-            </ListItemAvatar>
-            <ListItemText
-              primary={product.name}
-              primaryTypographyProps={{ variant: 'subtitle1' }}
-              secondary={`Updated ${dayjs(product.updatedAt).format('MMM D, YYYY')}`}
-              secondaryTypographyProps={{ variant: 'body2' }}
-            />
-            <IconButton edge="end">
-              <DotsThreeVerticalIcon weight="bold" />
-            </IconButton>
-          </ListItem>
-        ))}
+        {allProducts.map((product, index) => {
+          return (
+            <ListItem divider={index < products.length - 1} key={product.id}>
+              <ListItemAvatar>
+                {product.image ? (
+                  <Box component="img" src={baseURL() + product?.image} sx={{ borderRadius: 1, height: '48px', width: '48px' }} />
+                ) : (
+                  <Box
+                    sx={{
+                      borderRadius: 1,
+                      backgroundColor: 'var(--mui-palette-neutral-200)',
+                      height: '48px',
+                      width: '48px',
+                    }}
+                  />
+                )}
+              </ListItemAvatar>
+              <ListItemText
+                primary={product.name}
+                primaryTypographyProps={{ variant: 'subtitle1' }}
+                secondary={`Updated ${dayjs(product.updatedAt).format('MMM D, YYYY')}`}
+                secondaryTypographyProps={{ variant: 'body2' }}
+              />
+              <IconButton edge="end">
+                <DotsThreeVerticalIcon weight="bold" />
+              </IconButton>
+            </ListItem>
+          )
+        }
+        )}
       </List>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>

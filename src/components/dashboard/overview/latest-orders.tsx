@@ -15,26 +15,37 @@ import TableRow from '@mui/material/TableRow';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
 import dayjs from 'dayjs';
 
+
 const statusMap = {
-  pending: { label: 'Pending', color: 'warning' },
-  delivered: { label: 'Delivered', color: 'success' },
-  refunded: { label: 'Refunded', color: 'error' },
+  "PE": { label: 'Pending', color: 'warning' },
+  "DVD": { label: 'Delivered', color: 'success' },
+  "DIS": { label: 'Dispached', color: 'warning' },
+  "REF": { label: 'Refunded', color: 'error' },
 } as const;
 
 export interface Order {
-  id: string;
-  customer: { name: string };
+  _id: string;
+  userId: { name: string };
   amount: number;
-  status: 'pending' | 'delivered' | 'refunded';
+  email: string;
+  phone: string
+  status: 'PE' | 'DVD' | 'DIS' | 'REF';
   createdAt: Date;
 }
-
 export interface LatestOrdersProps {
   orders?: Order[];
   sx?: SxProps;
 }
 
 export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.Element {
+
+  let allOrders: Array<Order> = [] 
+  orders.map((item, i) => {
+   if(i !< 7){
+    allOrders.push(item)
+   }
+  })
+
   return (
     <Card sx={sx}>
       <CardHeader title="Latest orders" />
@@ -50,13 +61,14 @@ export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => {
+            {allOrders?.map((order) => {
+              
               const { label, color } = statusMap[order.status] ?? { label: 'Unknown', color: 'default' };
 
               return (
-                <TableRow hover key={order.id}>
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>{order.customer.name}</TableCell>
+                <TableRow hover key={order._id}>
+                  <TableCell>{order._id}</TableCell>
+                  <TableCell>{order.userId?.name}</TableCell>
                   <TableCell>{dayjs(order.createdAt).format('MMM D, YYYY')}</TableCell>
                   <TableCell>
                     <Chip color={color} label={label} size="small" />
